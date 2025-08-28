@@ -6,10 +6,9 @@ import net.anurag.banking.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -29,5 +28,21 @@ public class AccountController
     {
         return new ResponseEntity<>(accountService.createAccount(accountDto) , HttpStatus.CREATED);
     }
+    // get Account Rest api
+    @GetMapping("/{id}")  //@PathVariable to give template path var. to id
+    public ResponseEntity<AccountDto> getAccountById(@PathVariable Long id)
+    {
+        AccountDto accountDto = accountService.getAccountById(id);
+        return ResponseEntity.ok(accountDto);
+    }
 
+    // Deposit Rest API
+    @PutMapping("/{id}/deposit")
+    public ResponseEntity<AccountDto> deposit(@PathVariable Long id ,
+                                              @RequestBody Map<String , Double> request)
+    {
+        Double ammount = request.get("ammount");
+        AccountDto accountDto =  accountService.deposite(id , ammount);
+        return  ResponseEntity.ok(accountDto);
+    }
 }

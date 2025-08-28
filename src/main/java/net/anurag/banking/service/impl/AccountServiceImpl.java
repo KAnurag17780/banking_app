@@ -31,6 +31,28 @@ public class AccountServiceImpl implements AccountService
         return AccountMapper.mapToAccountDto(savedAccount); // so the api gets data from DTO not entity
     }
 
+    @Override
+    public AccountDto getAccountById(Long id) {
+        // check if account exist or not
+        Account account = accountRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Account does not exist"));
+        return AccountMapper.mapToAccountDto(account);
+    }
+
+    @Override
+    public AccountDto deposite(Long id, double ammount) {
+        Account account = accountRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Account does not exist"));
+
+        double total = account.getBalance() + ammount ;
+        account.setBalance(total); // setBalance is a setter for balance entity(object)
+        Account savedAccount =  accountRepository.save(account); // saving account to a DB
+        return AccountMapper.mapToAccountDto(savedAccount);
+
+    }
+
 //    since maptoAccount is static we not need to create object of Accountmapper
 //    AccountMapper mapper = new AccountMapper();
 //    Account account = mapper.mapToAccount(accountDto);
