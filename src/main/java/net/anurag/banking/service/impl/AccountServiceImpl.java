@@ -53,6 +53,27 @@ public class AccountServiceImpl implements AccountService
 
     }
 
+//    Withdraw
+    @Override
+    public AccountDto withdraw(Long id, double ammount)
+    {
+        Account account = accountRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Account does not exist"));
+
+        if(account.getBalance() < ammount)
+        {
+            throw new RuntimeException("Insufficent ammount");
+        }
+
+        double total = account.getBalance() - ammount;
+        account.setBalance(total);
+        Account savedAccount = accountRepository.save(account);
+
+
+        return AccountMapper.mapToAccountDto(savedAccount);
+    }
+
 //    since maptoAccount is static we not need to create object of Accountmapper
 //    AccountMapper mapper = new AccountMapper();
 //    Account account = mapper.mapToAccount(accountDto);
