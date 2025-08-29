@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService
 
         if(account.getBalance() < ammount)
         {
-//            this is new
+//            this is new not new
             throw new RuntimeException("Insufficent ammount");
         }
 
