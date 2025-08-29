@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService
 
     }
 
-//    Withdraw
+//    Withdraw can add reduce ammount
     @Override
     public AccountDto withdraw(Long id, double ammount)
     {
@@ -63,6 +63,7 @@ public class AccountServiceImpl implements AccountService
 
         if(account.getBalance() < ammount)
         {
+//            this is new
             throw new RuntimeException("Insufficent ammount");
         }
 
