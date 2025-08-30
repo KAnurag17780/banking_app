@@ -1,7 +1,6 @@
 package net.anurag.banking.controller;
 
 import net.anurag.banking.dto.AccountDto;
-import net.anurag.banking.repository.AccountRepository;
 import net.anurag.banking.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,6 +64,13 @@ public class AccountController
     {
         List<AccountDto> accounts = accountService.getAllAccounts();
         return ResponseEntity.ok(accounts);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id)
+    {
+         accountService.deleteAccount(id);
+        return ResponseEntity.ok("Account deleted Successfully");
     }
 
 }
