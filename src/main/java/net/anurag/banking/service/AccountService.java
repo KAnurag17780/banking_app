@@ -1,7 +1,8 @@
 package net.anurag.banking.service;
 
 import net.anurag.banking.dto.AccountDto;
-import net.anurag.banking.entity.Account;
+
+import java.util.List;
 
 public interface AccountService
 {
@@ -12,4 +13,6 @@ public interface AccountService
     AccountDto deposite(Long id , double ammount );
 
     AccountDto withdraw(Long id , double ammount);
+
+    List<AccountDto> getAllAccounts();
 }
