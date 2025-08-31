@@ -1,6 +1,7 @@
 package net.anurag.banking.service;
 
 import net.anurag.banking.dto.AccountDto;
+import net.anurag.banking.dto.TransactionDto;
 import net.anurag.banking.dto.TransferFundDto;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface AccountService
     void deleteAccount(Long id);
 
     void transferFunds(TransferFundDto transferFundDto);
+
+    List<TransactionDto> getAccountTransactions(Long accountId);
 }

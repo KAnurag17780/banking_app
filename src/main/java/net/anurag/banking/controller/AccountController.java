@@ -1,6 +1,7 @@
 package net.anurag.banking.controller;
 
 import net.anurag.banking.dto.AccountDto;
+import net.anurag.banking.dto.TransactionDto;
 import net.anurag.banking.dto.TransferFundDto;
 import net.anurag.banking.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,4 +84,12 @@ public class AccountController
         return ResponseEntity.ok("Transfer Sucessfull");
     }
 
+    // build transactions REST API
+    @GetMapping("/{id}/transactions")
+    public ResponseEntity<List<TransactionDto>> fetchAccountTransactions(@PathVariable("id") Long accountId)
+    {
+     List<TransactionDto> transactions =   accountService.getAccountTransactions(accountId);
+
+     return ResponseEntity.ok(transactions);
+    }
 }
