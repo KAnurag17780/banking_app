@@ -1,4 +1,9 @@
 package net.anurag.banking.exception;
 
-public record ErrorDetails() {
+import java.time.LocalDateTime;
+
+public record ErrorDetails(LocalDateTime timestamp,
+                           String message,
+                           String details,
+                           String errorCode ) {
 }

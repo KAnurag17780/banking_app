@@ -1,6 +1,7 @@
 package net.anurag.banking.controller;
 
 import net.anurag.banking.dto.AccountDto;
+import net.anurag.banking.dto.TransferFundDto;
 import net.anurag.banking.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,6 +72,15 @@ public class AccountController
     {
          accountService.deleteAccount(id);
         return ResponseEntity.ok("Account deleted Successfully");
+    }
+
+    // build transfer rest api
+    //  <String> what we return
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transferFund(@RequestBody  TransferFundDto transferFundDto)
+    {
+        accountService.transferFunds(transferFundDto);
+        return ResponseEntity.ok("Transfer Sucessfull");
     }
 
 }

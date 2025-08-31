@@ -10,9 +10,9 @@ public class AccountMapper
     public static Account mapToAccount(AccountDto accountDto)
     {
         Account account = new Account(
-                accountDto.getId(),
-                accountDto.getAccountHolderName(),
-                accountDto.getBalance()
+                accountDto.id(),
+                accountDto.accountHolderName(), // direct variables call no need to call getter setter
+                accountDto.balance()
         );
         return account;
 

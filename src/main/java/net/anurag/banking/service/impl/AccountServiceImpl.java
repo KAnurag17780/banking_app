@@ -1,7 +1,9 @@
 package net.anurag.banking.service.impl;
 
 import net.anurag.banking.dto.AccountDto;
+import net.anurag.banking.dto.TransferFundDto;
 import net.anurag.banking.entity.Account;
+import net.anurag.banking.exception.AccountException;
 import net.anurag.banking.mapper.AccountMapper;
 import net.anurag.banking.repository.AccountRepository;
 import net.anurag.banking.service.AccountService;
@@ -41,7 +43,7 @@ public class AccountServiceImpl implements AccountService
         // check if account exist or not
         Account account = accountRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Account does not exist"));
+                .orElseThrow(() -> new AccountException("Account does not exist"));
         return AccountMapper.mapToAccountDto(account);
     }
 
@@ -49,7 +51,7 @@ public class AccountServiceImpl implements AccountService
     public AccountDto deposite(Long id, double ammount) {
         Account account = accountRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Account does not exist"));
+                .orElseThrow(() -> new AccountException("Account does not exist"));
 
         double total = account.getBalance() + ammount ;
         account.setBalance(total); // setBalance is a setter for balance entity(object)
@@ -64,7 +66,7 @@ public class AccountServiceImpl implements AccountService
     {
         Account account = accountRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Account does not exist"));
+                .orElseThrow(() -> new AccountException("Account does not exist"));
 
         if(account.getBalance() < ammount)
         {
@@ -87,6 +89,37 @@ public class AccountServiceImpl implements AccountService
       return accounts.stream().map((account) -> AccountMapper.mapToAccountDto(account))
                .collect(Collectors.toList());
 
+
+    }
+
+    @Override
+    public void deleteAccount(Long id) {
+        Account account = accountRepository
+                .findById(id)
+                .orElseThrow(() -> new AccountException("Account does not exist"));
+
+        accountRepository.deleteById(id);
+
+    }
+
+    @Override
+    public void transferFunds(TransferFundDto transferFundDto) {
+        // Retrieve the account from which we send the account
+        Account fromAccount = accountRepository
+                .findById(transferFundDto.fromAccountId())
+                .orElseThrow(() -> new AccountException("Account does not exist"));
+
+        // Retrive the account to which we send the ammount
+         Account toAccount = accountRepository
+                .findById(transferFundDto.toAccountId())
+                .orElseThrow(() -> new AccountException("Account does not exist"));
+         // Debit the amount fromAccount object
+            fromAccount.setBalance(fromAccount.getBalance() - transferFundDto.ammount());
+            // credit the amount toAccount object
+            toAccount.setBalance(toAccount.getBalance() + transferFundDto.ammount());
+
+            accountRepository.save(fromAccount);
+            accountRepository.save(toAccount);
 
     }
 
